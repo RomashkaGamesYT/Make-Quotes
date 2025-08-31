@@ -1,138 +1,183 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Make Quotes</title>
-    <style>
-        body {
-            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-            background-color: #fefefe;
-            color: #000;
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            padding: 2rem;
-            text-align: center;
-            border-bottom: 1px solid #ccc;
-        }
-        header h1 {
-            margin: 0;
-            font-weight: 400;
-            font-size: 2rem;
-        }
-        main {
-            max-width: 700px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-        }
-        textarea, input[type="text"] {
-            width: 100%;
-            padding: 0.5rem;
-            margin: 0.5rem 0 1rem 0;
-            font-size: 1rem;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        button {
-            padding: 0.5rem 1rem;
-            font-size: 1rem;
-            background-color: #0088cc;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #006699;
-        }
-        .quote-output {
-            margin-top: 2rem;
-            padding: 1rem;
-            border-left: 4px solid #0088cc;
-            background-color: #f9f9f9;
-        }
-        .quote-output p {
-            margin: 0.5rem 0;
-        }
-        a.bot-link {
-            display: inline-block;
-            margin-top: 2rem;
-            padding: 0.5rem 1rem;
-            background-color: #0088cc;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-        a.bot-link:hover {
-            background-color: #006699;
-        }
-        input#copyLink {
-            width: 100%;
-            padding: 0.5rem;
-            margin-top: 1rem;
-            font-size: 0.9rem;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Make Quotes</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+    /* Общие стили */
+    body {
+        font-family: 'Inter', sans-serif;
+        background: linear-gradient(135deg, #f0f2f5, #e0e7ff);
+        color: #111;
+        margin: 0;
+        padding: 0;
+    }
+
+    header {
+        text-align: center;
+        padding: 3rem 1rem 1rem 1rem;
+    }
+
+    header h1 {
+        font-weight: 600;
+        font-size: 2.5rem;
+        margin: 0;
+        color: #4f46e5;
+    }
+
+    main {
+        max-width: 700px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+    }
+
+    textarea, input[type="text"] {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        margin: 0.5rem 0 1rem 0;
+        font-size: 1rem;
+        border-radius: 10px;
+        border: 1px solid #ccc;
+        outline: none;
+        transition: all 0.3s ease;
+        background-color: #fff;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+
+    textarea:focus, input:focus {
+        border-color: #4f46e5;
+        box-shadow: 0 0 10px rgba(79,70,229,0.2);
+    }
+
+    button {
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        font-weight: 600;
+        background: linear-gradient(90deg, #4f46e5, #6366f1);
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(79,70,229,0.3);
+    }
+
+    .quote-output {
+        margin-top: 2rem;
+        padding: 1.5rem 2rem;
+        border-radius: 15px;
+        background-color: #fff;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.5s ease;
+    }
+
+    .quote-output.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .quote-output p {
+        margin: 0.5rem 0;
+        font-size: 1.2rem;
+    }
+
+    .quote-output p.author {
+        text-align: right;
+        font-style: italic;
+        color: #555;
+    }
+
+    a.bot-link {
+        display: inline-block;
+        margin-top: 2rem;
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        background: linear-gradient(90deg, #4f46e5, #6366f1);
+        color: #fff;
+        text-decoration: none;
+        border-radius: 10px;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    a.bot-link:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(79,70,229,0.3);
+    }
+
+    #copyLink {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        margin-top: 1rem;
+        font-size: 0.95rem;
+        border-radius: 10px;
+        border: 1px solid #ccc;
+        background-color: #f9fafb;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    #copyLink:focus {
+        border-color: #4f46e5;
+        box-shadow: 0 0 10px rgba(79,70,229,0.2);
+    }
+</style>
 </head>
 <body>
-    <header>
-        <h1>Make Quotes</h1>
-    </header>
-    <main>
-        <p>Создайте свою цитату:</p>
-        <textarea id="quoteText" rows="4" placeholder="Введите цитату..."></textarea>
-        <input type="text" id="quoteAuthor" placeholder="Автор (необязательно)">
-        <button onclick="generateQuote()">Создать цитату</button>
+<header>
+    <h1>Make Quotes</h1>
+</header>
+<main>
+    <p>Создайте свою современную цитату:</p>
+    <textarea id="quoteText" rows="4" placeholder="Введите цитату..."></textarea>
+    <input type="text" id="quoteAuthor" placeholder="Автор (необязательно)">
+    <button onclick="generateQuote()">Создать цитату</button>
 
-        <div class="quote-output" id="output" style="display:none;">
-            <p id="outputText"></p>
-            <p id="outputAuthor" style="text-align:right; font-style:italic;"></p>
-            <input type="text" id="copyLink" readonly onclick="this.select()">
-        </div>
+    <div class="quote-output" id="output">
+        <p id="outputText"></p>
+        <p class="author" id="outputAuthor"></p>
+        <input type="text" id="copyLink" readonly onclick="this.select()">
+    </div>
 
-        <a class="bot-link" href="http://telegram.me/Make_quotes_bot" target="_blank">Перейти к боту</a>
-    </main>
+    <a class="bot-link" href="http://telegram.me/Make_quotes_bot" target="_blank">Перейти к боту</a>
+</main>
 
-    <script>
-        function generateQuote() {
-            const text = document.getElementById('quoteText').value.trim();
-            const author = document.getElementById('quoteAuthor').value.trim();
-            if (!text) {
-                alert('Введите текст цитаты!');
-                return;
-            }
+<script>
+function generateQuote() {
+    const text = document.getElementById('quoteText').value.trim();
+    const author = document.getElementById('quoteAuthor').value.trim();
+    if (!text) { alert('Введите текст цитаты!'); return; }
 
-            document.getElementById('outputText').innerText = `"${text}"`;
+    document.getElementById('outputText').innerText = `"${text}"`;
+    document.getElementById('outputAuthor').innerText = author ? `— ${author}` : '';
+    document.getElementById('output').classList.add('show');
+
+    const encodedQuote = encodeURIComponent(text);
+    const encodedAuthor = encodeURIComponent(author);
+    const link = `${window.location.origin}${window.location.pathname}#${encodedQuote}|${encodedAuthor}`;
+    document.getElementById('copyLink').value = link;
+
+    window.location.hash = `${encodedQuote}|${encodedAuthor}`;
+}
+
+window.addEventListener('load', () => {
+    if (window.location.hash) {
+        const [quote, author] = decodeURIComponent(window.location.hash.substring(1)).split('|');
+        if (quote) {
+            document.getElementById('outputText').innerText = `"${quote}"`;
             document.getElementById('outputAuthor').innerText = author ? `— ${author}` : '';
-            document.getElementById('output').style.display = 'block';
-
-            // Создаём ссылку с хешем
-            const encodedQuote = encodeURIComponent(text);
-            const encodedAuthor = encodeURIComponent(author);
-            const link = `${window.location.origin}${window.location.pathname}#${encodedQuote}|${encodedAuthor}`;
-            document.getElementById('copyLink').value = link;
-
-            // Обновляем URL в адресной строке
-            window.location.hash = `${encodedQuote}|${encodedAuthor}`;
+            document.getElementById('output').classList.add('show');
+            document.getElementById('copyLink').value = window.location.href;
         }
-
-        // Проверяем хеш при загрузке страницы
-        window.addEventListener('load', () => {
-            if (window.location.hash) {
-                const [quote, author] = decodeURIComponent(window.location.hash.substring(1)).split('|');
-                if (quote) {
-                    document.getElementById('outputText').innerText = `"${quote}"`;
-                    document.getElementById('outputAuthor').innerText = author ? `— ${author}` : '';
-                    document.getElementById('output').style.display = 'block';
-                    document.getElementById('copyLink').value = window.location.href;
-                }
-            }
-        });
-    </script>
+    }
+});
+</script>
 </body>
 </html>
